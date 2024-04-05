@@ -64,6 +64,22 @@ omec-control-plane:
 
     metricfunc:
       deploy: true
+      cfgFiles:
+        metricscfg.conf:
+          configuration:
+            nfStreams:
+              - topic:
+                  topicGroup: analytics
+                  topicName: sdcore-data-source-amf
+                urls:
+                  - uri: "kafka-headless.omec.svc"
+                    port: 9092
+              - topic:
+                  topicGroup: analytics
+                  topicName: sdcore-data-source-smf
+                urls:
+                  - uri: "kafka-headless.omec.svc"
+                    port: 9092
 
     # Change AMF config here if rquired Most of the AMF config comes from Slice APIs
     # but some of the config is directly provided  thorugh helm chart
@@ -79,6 +95,9 @@ omec-control-plane:
             # storing AMF subscribers in the datastore is disabled by default. 
             # Once internal testing is complete we will enable DBStore by default.
             enableDBStore: true
+            kafkaInfo:
+              brokerUri: kafka-headless.omec.svc
+              brokerPort: 9092
 
     # SMF config override. Refer helm chart values for more options.
     smf:
@@ -88,6 +107,10 @@ omec-control-plane:
             # Storing AMF subscribers in the datastore is disabled by default. 
             # Once internal testing is complete we will enable DBStore by default.
             enableDBStore: true
+            kafkaInfo:
+              enableKafka: true
+              brokerUri: kafka-headless.omec.svc
+              brokerPort: 9092
 
     #pcf:
     #  cfgFiles:
